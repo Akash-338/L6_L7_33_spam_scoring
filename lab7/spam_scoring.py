@@ -51,6 +51,7 @@ def shout_ratio(text):
     return uppercase / len(letters)
 
 
+
 def main():
     print("==== Running sender_domain ====")
     user_input = input("Enter a sender email (e.g. offers@Deals.com): ")
@@ -63,6 +64,7 @@ def main():
     print("\n==== Running shout_ratio ====")
     user_input = input("Enter a message (e.g. FREE prize NOW): ")
     print("Uppercase Ratio:", shout_ratio(user_input))
+
 
 
 if __name__ == "__main__":
