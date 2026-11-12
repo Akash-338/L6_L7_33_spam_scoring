@@ -62,5 +62,5 @@ def test_first_link_valid_examples():
 
 
 def test_shout_ratio_examples_and_no_letters():
-    assert shout_ratio("FREE prize NOW") == 8 / 12
+    assert shout_ratio("FREE prize NOW") == 7 / 12
     assert shout_ratio("123 !?") == 0.0
