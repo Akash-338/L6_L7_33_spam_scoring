@@ -1,73 +1,70 @@
+"""Input validation helpers for the spam-scoring lab."""
+
 
 def sender_domain(email):
-    # Check whether input is a valid string
+    """Return the lower-cased domain from a sender email address.
+
+    Invalid input (non-string, missing/multiple separators, or empty parts)
+    returns an empty string rather than raising an exception.
+    """
     if not isinstance(email, str):
         return ""
 
     email = email.strip()
-
-    # Check whether exactly one @ symbol exists
-    parts = email.split("@")
-
-    if len(parts) != 2:
+    if email.count("@") != 1:
         return ""
 
-    # Check whether both parts are non-empty
-    if not parts[0].strip() or not parts[1].strip():
+    local, domain = email.split("@", 1)
+    if not local.strip() or not domain.strip():
         return ""
 
-    return parts[1].strip().lower()
+    return domain.strip().lower()
 
 
 def first_link(text):
-    # Check whether input is a string
+    """Return the first HTTP(S) URL-like token, or an empty string."""
     if not isinstance(text, str):
         return ""
 
-    # Find the first occurrence of http (case-insensitive)
-    start = text.lower().find("http")
+    import re
 
-    # Return empty string if no link is found
-    if start == -1:
+    match = re.search(r"https?://[^\s<>]+", text, flags=re.IGNORECASE)
+    if not match:
         return ""
 
-    # Extract the link
-    return text[start:].split()[0]
+    return match.group(0).rstrip(".,!?;:)]}")
 
 
 def shout_ratio(text):
-    # Check whether input is a string
+    """Return the uppercase-letter ratio among alphabetic characters.
+
+    Returns 0.0 when there are no alphabetic characters or input is not text.
+    """
     if not isinstance(text, str):
         return 0.0
 
-    # Get all alphabetic characters
-    letters = [c for c in text if c.isalpha()]
-
-    # Avoid division by zero
-    if len(letters) == 0:
+    letters = [char for char in text if char.isalpha()]
+    if not letters:
         return 0.0
 
-    # Count uppercase characters
-    upper = [c for c in letters if c.isupper()]
+    uppercase = sum(char.isupper() for char in letters)
+    return uppercase / len(letters)
 
-    return len(upper) / len(letters)
 
 
 def main():
     print("==== Running sender_domain ====")
     user_input = input("Enter a sender email (e.g. offers@Deals.com): ")
-    result = sender_domain(user_input)
-    print("Sender Domain:", result)
+    print("Sender Domain:", sender_domain(user_input))
 
     print("\n==== Running first_link ====")
     user_input = input("Enter a message containing a link: ")
-    result = first_link(user_input)
-    print("First Link:", result)
+    print("First Link:", first_link(user_input))
 
     print("\n==== Running shout_ratio ====")
     user_input = input("Enter a message (e.g. FREE prize NOW): ")
-    result = shout_ratio(user_input)
-    print("Uppercase Ratio:", result)
+    print("Uppercase Ratio:", shout_ratio(user_input))
+
 
 
 if __name__ == "__main__":
