@@ -22,17 +22,13 @@ def sender_domain(email):
 
 
 def first_link(text):
-    """Return the first HTTP(S) URL-like token, or an empty string.
-
-    Non-string values, missing links, and malformed bare schemes are handled
-    without exceptions. Trailing common punctuation is excluded.
-    """
+    """Return the first HTTP(S) URL-like token, or an empty string."""
     if not isinstance(text, str):
         return ""
 
     import re
 
-    match = re.search(r"https?://[^\s<>\\"']+", text, flags=re.IGNORECASE)
+    match = re.search(r"https?://[^\s<>]+", text, flags=re.IGNORECASE)
     if not match:
         return ""
 
@@ -40,7 +36,7 @@ def first_link(text):
 
 
 def shout_ratio(text):
-    """Return uppercase-letter ratio among alphabetic characters.
+    """Return the uppercase-letter ratio among alphabetic characters.
 
     Returns 0.0 when there are no alphabetic characters or input is not text.
     """
